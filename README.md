@@ -1,3 +1,5 @@
 # bibliometrics
 
-How can you measure the success of a researcher in Child Health and Wellness (CHW)?
+# File Descriptions
+
+- `merge_new_site`: used to download author profiles and publications for disambiguated authors; merges new author profiles and publications with existing data 
