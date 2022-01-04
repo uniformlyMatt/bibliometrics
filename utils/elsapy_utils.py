@@ -1,10 +1,8 @@
 import requests
-import json
 
 logfile = None
-
-
 # 17 June 2021 - logging disabled for now until I figure out a better way to do it
+
 
 def logging(logfile=logfile):
     """ Add func calls to the logfile 
@@ -128,7 +126,7 @@ def get_auid(query: str, headers=None) -> str:
     try:
         num_results = int(txt.get(search_key).get('opensearch:totalResults'))
     except:
-        return None
+        return ''
 
     # 29 June 2021 - temporary change for validating findings
     #     if num_results == 1:
@@ -136,7 +134,7 @@ def get_auid(query: str, headers=None) -> str:
 
     if num_results == 0:
         print('No matches found for search {}'.format(query))
-        return None
+        return ''
 
     # what to do if there's more than one match but less than 25 matches
     elif num_results == 1:  # change back to > 1 after validating
@@ -172,7 +170,7 @@ def get_auid(query: str, headers=None) -> str:
     # TODO allow navigation for over 25 matches
     else:
         print('Over 25 matches found')
-        return None
+        return ''
 
 
 def api_search(df, letters=None, headers=None):
