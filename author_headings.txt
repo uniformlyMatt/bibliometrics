@@ -1,0 +1,1 @@
+affiliation_current,affiliation_history,alias,citation_count,cited_by_count,coauthor_count,classificationgroup,coauthor_link,date_created,document_count,eid,given_name,h_index,historical_identifier,identifier,indexed_name,initials,name_variants,orcid,publication_range,scopus_author_link,search_link,self_link,status,subject_areas,surname,url
