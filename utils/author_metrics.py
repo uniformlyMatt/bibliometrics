@@ -67,7 +67,7 @@ def count_affils(affils: list) -> int:
             list of affiliations for a given author
 
         :returns:
-            length of the list - 0 if the list if empty
+            length of the list - 0 if the list is empty
 
         Examples:
         >>> count_affils([7, 67, 54])
@@ -80,49 +80,3 @@ def count_affils(affils: list) -> int:
         return 0
     else:
         return len(affils)
-
-
-def publication_metrics(profiles: dict) -> dict:
-    """ Generate df to hold all publication metrics for each author
-
-        args:
-        -----
-        :profiles:
-            dict of {auid: AuthorRetrieval object}
-
-        :returns:
-            dict of the form
-                 auid: [
-                     indexed_name,
-                     affiliation_current,
-                     affiliation_history,
-                     alias,
-                     citation_count,
-                     cited_by_count,
-                     coauthor_count,
-                     classificationgroup,
-                     document_count,
-                     h_index,
-                     orcid,
-                     publication_range,
-                     subject_areas
-                 ]
-    """
-
-    return {
-        author: [
-            profiles[author].indexed_name,
-            profiles[author].affiliation_current,
-            profiles[author].affiliation_history,
-            profiles[author].alias,
-            profiles[author].citation_count,
-            profiles[author].cited_by_count,
-            profiles[author].coauthor_count,
-            profiles[author].classificationgroup,
-            profiles[author].document_count,
-            profiles[author].h_index,
-            profiles[author].orcid,
-            profiles[author].publication_range,
-            profiles[author].subject_areas,
-        ] for author in profiles
-    }
