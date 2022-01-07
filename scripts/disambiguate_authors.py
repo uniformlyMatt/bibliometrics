@@ -5,7 +5,7 @@
       columns. You will need to ensure that these columns exists in the pandas DataFrame
 """
 
-import utils.elsapy_utils as ep
+from ..utils import elsapy_utils as ep
 import pandas as pd
 import json
 
@@ -24,8 +24,8 @@ headers = {
     "X-RateLimit-Reset": None
 }
 
-filepath = '../Datasets/{}.xlsx'
-site = 'WCHRI_members'  # change this to the corresponding site
+filepath = '../../Datasets/{}_missing_members.xlsx'
+site = 'WCHRI'  # change this to the corresponding site
 
 df_site = pd.read_excel(filepath.format(site), header=0)
 
@@ -41,3 +41,19 @@ df_site['request'] = url + df_site.copy().apply(
 # perform the searches
 assert isinstance(headers, dict)
 ep.api_search(df_site, letters=None, headers=headers)
+
+# find the new missing ids
+missing = df_site[df_site['auid'].isna()]
+not_missing = df_site[~df_site['auid'].isna()]
+
+print(
+    '{}: {} out of {} authors identified ({:.2f}%)\n{} still missing'.format(
+        site,
+        len(not_missing),
+        len(df_site),
+        len(not_missing)/len(df_site)*100,
+        len(missing)
+    )
+)
+
+not_missing.to_excel(site + '_disambiguated_jan6.xlsx')
