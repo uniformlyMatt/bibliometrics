@@ -80,7 +80,7 @@ def merge_profiles(profile_dict: dict, profile_headings: list, existing_profile_
 
     # load existing author profiles
     if existing_profile_path is None:
-        existing_profile_path = '../../Datasets/chw_author_profiles.xlsx'
+        existing_profile_path = '../Datasets/chw_author_profiles.xlsx'
 
     chw_profiles = pd.read_excel(existing_profile_path)
 
@@ -106,7 +106,7 @@ def main(
     """
 
     # load the author headings to be used for merging with existing author profiles
-    with open('../author_headings.txt', 'r') as heading_file:
+    with open('author_headings.txt', 'r') as heading_file:
         reader = csv.reader(heading_file)
         headings = [item for sublist in list(reader) for item in sublist]
 
@@ -125,8 +125,8 @@ def main(
 
 
 if __name__ == '__main__':
-    ids_path = '../../Datasets/chw_ids.xlsx'
+    ids_path = '../Datasets/chw_ids.xlsx'
     newsite = 'MCMASTER'  # change this to the name of the new site
     pub_destination = '../Datasets/chw_publications.csv'
-    profiles_path = '../../Datasets/chw_author_profiles.xlsx'
+    profiles_path = '../Datasets/chw_author_profiles.xlsx'
     main(ids_path, newsite, pub_destination, profiles_path, profiles_path)

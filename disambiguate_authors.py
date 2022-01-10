@@ -12,7 +12,7 @@ import json
 pd.options.mode.chained_assignment = None  # default='warn'
 
 # Load configuration
-with open('config.json', 'r') as file:
+with open('scripts/config.json', 'r') as file:
     config = json.load(file)
 
 url = 'https://api.elsevier.com/content/search/author?query='
