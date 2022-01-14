@@ -8,11 +8,11 @@ using<-function(...) {
   }
 }
 
-using("readxl","ggplot2","corrplot","PLNmodels","factoextra")
+using("readxl","ggplot2","corrplot","PLNmodels","factoextra","jsonlite")
 
 today <- format(Sys.time(), "%b_%d_%Y")
 
-profiles <- read_excel("../PCA_inputs_jan12.xlsx")
+profiles <- read_excel("../PCA_inputs_jan13.xlsx")
 
 counts <- profiles[c(
   'citation_count',
@@ -54,7 +54,11 @@ bestBIC <- getBestModel(PCAmodels, "BIC")
 plot(bestICL, ind_cols=df$affil)
 plot(bestBIC, ind_cols=df$affil)
 
-# save best BIC model to csv
+## save PC scores to dataframe and persist to JSON
+scores <- data.frame(c(profiles, bestBIC$scores))
+write_json(scores, paste("pca_scores_author_profiles_", today, ".json", sep=""))
+
+## save best BIC model to csv
 write.csv(bestBIC$model_par$B, paste("pca_loadings_", today, ".csv", sep=""))
 write.csv(bestBIC$model_par$Sigma, paste("pca_covariance_matrix_", today, ".csv", sep=""))
 write.csv(bestBIC$model_par$Theta, paste("pca_fitted_theta_", today, ".csv", sep=""))
