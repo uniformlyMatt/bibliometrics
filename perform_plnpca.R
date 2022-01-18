@@ -8,15 +8,15 @@ using<-function(...) {
   }
 }
 
-using("readxl","ggplot2","corrplot","PLNmodels","factoextra","jsonlite")
+using("readxl","ggplot2","corrplot","PLNmodels","factoextra")
 
 today <- format(Sys.time(), "%b_%d_%Y")
 
-profiles <- read_excel("../PCA_inputs_jan13.xlsx")
+profiles <- read_excel("../Datasets/PCA_inputs_jan18.xlsx")
 
 counts <- profiles[c(
   'citation_count',
-  'cited_by_count',
+  #'cited_by_count',
   'coauthor_count',
   'document_count',
   'h_index',
@@ -29,12 +29,12 @@ counts <- profiles[c(
 covariates <- profiles[c(
   'mean_citations_per_year',
   'growth_rate',
-  'SJR_median',
-  'journal_h_index_median',
-  'author_count_median',
-  'median_citations_per_doc',
-  'chw_author_position_median',
-  'author_weight_median',
+  'SJR_mean',
+  'journal_h_index_mean',
+  'author_count_mean',
+  'mean_citations_per_doc',
+  'chw_author_position_mean',
+  'author_weight_mean',
   'Auid',
   'affil'
 )]
@@ -42,11 +42,12 @@ covariates <- profiles[c(
 df <- prepare_data(counts=counts, covariates=covariates)
 
 PCAmodels <- PLNPCA(
-  Abundance ~ 1 + offset(log(Offset)) + mean_citations_per_year + growth_rate +
-    SJR_median + journal_h_index_median + author_count_median +
-    median_citations_per_doc + chw_author_position_median + author_weight_median,
+  Abundance ~ 1 + #offset(log(Offset)) + 
+    growth_rate + mean_citations_per_year +
+    SJR_mean + journal_h_index_mean,# + author_weight_mean, #+
+    #median_citations_per_doc + chw_author_position_median + author_count_median,
   data=df,
-  ranks=1:10
+  ranks=1:9
 )
 
 bestICL <- getBestModel(PCAmodels, "ICL")
@@ -55,8 +56,9 @@ plot(bestICL, ind_cols=df$affil)
 plot(bestBIC, ind_cols=df$affil)
 
 ## save PC scores to dataframe and persist to JSON
-scores <- data.frame(c(profiles, bestBIC$scores))
-write_json(scores, paste("pca_scores_author_profiles_", today, ".json", sep=""))
+scores <- data.frame(bestBIC$scores)
+results <- cbind(profiles, scores)
+write.csv(results, paste("pca_scores_author_profiles_", today, ".csv", sep=""))
 
 ## save best BIC model to csv
 write.csv(bestBIC$model_par$B, paste("pca_loadings_", today, ".csv", sep=""))
